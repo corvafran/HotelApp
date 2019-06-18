@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
@@ -75,6 +76,7 @@ class HotelsAdapter : RecyclerView.Adapter<BaseViewHolder<*>>() {
         // If the bound view wasn't previously displayed on screen, it's animated
         if (position > lastPosition) {
             val animation = AnimationUtils.loadAnimation(viewToAnimate.context, android.R.anim.slide_in_left)
+            animation.setInterpolator(OvershootInterpolator(2f))
             viewToAnimate.startAnimation(animation)
             lastPosition = position
         }
