@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        android:layout_margin="15dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="100dp">
+
+        <ImageView
+                android:id="@+id/ivHotel"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                android:src="@drawable/ph_hotel"/>
+
+        <TextView
+                android:id="@+id/tvName"
+                app:layout_constraintLeft_toRightOf="@+id/ivHotel"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:lines="2"
+                app:layout_constraintRight_toRightOf="parent"
+                android:gravity="left"
+                android:text="Name" style="@style/InfoTextHotelItem"/>
+
+        <TextView
+                android:id="@+id/tvAddress"
+                app:layout_constraintLeft_toRightOf="@+id/ivHotel"
+                android:layout_width="0dp"
+                android:lines="2"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/tvName"
+                android:text="Address"
+                style="@style/InfoTextHotelItem"/>
+
+        <TextView
+                android:id="@+id/tvPrice"
+                app:layout_constraintLeft_toRightOf="@+id/ivHotel"
+                android:layout_width="0dp"
+                app:layout_constraintRight_toRightOf="parent"
+
+                android:layout_height="wrap_content"
+                style="@style/InfoTextHotelItem"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddress"
+                android:text="Price: ARS 1000 - ARS 2000"/>
+        <RatingBar
+                android:id="@+id/rbHotelStars"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="@dimen/margin_small"
+                app:layout_constraintTop_toBottomOf="@id/tvPrice"
+                app:layout_constraintLeft_toRightOf="@id/ivHotel"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_marginLeft="@dimen/margin_extra_small"
+                android:layout_marginTop="@dimen/margin_extra_small"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
