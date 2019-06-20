@@ -1,7 +1,9 @@
 package com.example.testhoteles.ui.main
 
 import android.content.Intent
+import android.media.Image
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -60,16 +62,16 @@ class MainActivity : BaseActivity() {
             it ->
             (rvHotels.adapter as HotelsAdapter).hotelsList = it
             (rvHotels.adapter as HotelsAdapter).onClickHotel = {
-                pos, hotel ->
-                onClickHotel(hotel)
+                pos, hotel, ivHotel ->
+                onClickHotel(hotel, ivHotel)
 
             }
             rvHotels?.adapter?.notifyDataSetChanged()
         })
     }
 
-    private fun onClickHotel(hotel: Hotel) {
-        HotelDetailActivity.start(hotel, this)
+    private fun onClickHotel(hotel: Hotel, ivHotel: ImageView) {
+        HotelDetailActivity.start(hotel, ivHotel, this)
     }
 
     private fun onScreenStateChanged(screenState: ScreenState?) {

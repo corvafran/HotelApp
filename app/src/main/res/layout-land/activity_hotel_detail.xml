@@ -24,7 +24,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:scaleType="centerCrop"
-                    app:layout_constraintDimensionRatio="16:9"
+                    app:layout_constraintDimensionRatio="4:1"
                     android:src="@drawable/ph_hotel"/>
             <include layout="@layout/view_container_loading"
                      android:layout_width="match_parent"
@@ -32,7 +32,6 @@
                      android:layout_marginTop="@dimen/margin_normal"
                      app:layout_constraintTop_toBottomOf="@+id/ivHotel"/>
             <include layout="@layout/view_hotel_detail_info"/>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

@@ -7,4 +7,5 @@
     <string name="toolbar_title_comment">Comentarios</string>
     <string name="toolbar_title_hotel_detail">Detalle Del Hotel</string>
     <string name="bad_comment">Comentario negativo: %s</string>
+    <string name="iv_hotel_transition">iv_hotel_transition</string>
 </resources>

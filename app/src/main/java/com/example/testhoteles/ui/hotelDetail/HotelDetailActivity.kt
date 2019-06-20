@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -23,6 +24,10 @@ import com.example.testhoteles.utils.Constants
 import kotlinx.android.synthetic.main.activity_hotel_detail.*
 import kotlinx.android.synthetic.main.item_amenitie.*
 import javax.inject.Inject
+import androidx.core.view.ViewCompat
+import androidx.core.app.ActivityOptionsCompat
+import android.app.Activity
+import kotlinx.android.synthetic.main.view_hotel_detail_info.*
 
 
 class HotelDetailActivity: BaseActivity() {
@@ -31,10 +36,14 @@ class HotelDetailActivity: BaseActivity() {
     lateinit var hotelDetailViewModel: HotelDetailViewModel
 
     companion object{
-        fun start(hotel: Hotel, context: Context){
-            val intent = Intent(context, HotelDetailActivity::class.java)
+        fun start(hotel: Hotel, ivHotel: ImageView, activity: Activity){
+            val intent = Intent(activity, HotelDetailActivity::class.java)
             intent.putExtra(Constants.HOTEL_EXTRA, hotel)
-            context.startActivity(intent)
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                activity,
+                ivHotel,
+                ViewCompat.getTransitionName(ivHotel)!!)
+            activity.startActivity(intent, options.toBundle())
         }
     }
 
@@ -46,7 +55,9 @@ class HotelDetailActivity: BaseActivity() {
         val hotelExtra: Hotel = getHotelExtra()
         setupAmenitiesList()
         loadHotelInfo(hotelExtra)
+        //Inyecto mis dependencias en esta activity
         app?.component?.inject(this)
+        //Utilizo el ViewModelProviders quien va a ser el encargado de administrar la instancia de mi viewModel
         hotelDetailViewModel = ViewModelProviders
             .of(this, viewModelFactory)
             .get(HotelDetailViewModel::class.java)
@@ -55,6 +66,7 @@ class HotelDetailActivity: BaseActivity() {
         setEvents()
     }
 
+    //SETEO EVENTOS DE CLICK
     private fun setEvents() {
         llReviews.setOnClickListener {
             if(!hotelDetailViewModel.hotel!!.reviews.isNullOrEmpty()){

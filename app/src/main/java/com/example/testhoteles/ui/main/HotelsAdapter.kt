@@ -1,5 +1,6 @@
 package com.example.testhoteles.ui.main
 
+import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,8 +20,8 @@ class HotelsAdapter : RecyclerView.Adapter<BaseViewHolder<*>>() {
     var hotelsList : MutableList<Hotel> = arrayListOf()
     var lastPosition: Int = -1
 
-    var onClickHotel: (pos: Int, hotel: Hotel)-> Unit = {
-        pos, hotel ->
+    var onClickHotel: (pos: Int, hotel: Hotel, ivHotel: ImageView)-> Unit = {
+        pos, hotel, ivHotel ->
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
@@ -40,7 +41,7 @@ class HotelsAdapter : RecyclerView.Adapter<BaseViewHolder<*>>() {
         (holder as HotelViewHolder).clearAnimation()
 
     }
-    class HotelViewHolder(itemView : View,  var onClickHotel: (pos: Int, hotel: Hotel)-> Unit) : BaseViewHolder<Hotel>(itemView){
+    class HotelViewHolder(itemView : View,  var onClickHotel: (pos: Int, hotel: Hotel, ivHotel: ImageView)-> Unit) : BaseViewHolder<Hotel>(itemView){
         val ivHotel: ImageView = itemView.findViewById(R.id.ivHotel)
         val tvAddress: TextView = itemView.findViewById(R.id.tvAddress)
         val tvPrice: TextView = itemView.findViewById(R.id.tvPrice)
@@ -49,7 +50,7 @@ class HotelsAdapter : RecyclerView.Adapter<BaseViewHolder<*>>() {
 
         override fun bindItem(item: Hotel) {
             itemView.setOnClickListener {
-                onClickHotel(adapterPosition, item)
+                onClickHotel(adapterPosition, item,ivHotel)
             }
             GlideApp.with(itemView.context)
                 .load(item.mainPicture)

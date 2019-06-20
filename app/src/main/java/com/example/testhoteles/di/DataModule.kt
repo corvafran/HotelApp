@@ -27,17 +27,8 @@ import javax.inject.Scope
 import javax.inject.Singleton
 
 @Module
-class HotelsModule {
-   /* @Provides
-    @Singleton
-    fun mainViewModel(repository: HotelsRepository): MainViewModel {
-        return MainViewModel(repository)
-    }*/
+class DataModule {
 
-   /* @Provides
-    fun hotelDetailViewModel(repository: HotelsRepository):  HotelDetailViewModel{
-        return HotelDetailViewModel(repository)
-    }*/
 
     @Provides
     fun repository(apiServices: ApiServices, hotelDao: HotelDao): HotelsRepository {

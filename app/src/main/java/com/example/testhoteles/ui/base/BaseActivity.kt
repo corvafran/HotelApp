@@ -24,7 +24,7 @@ abstract class BaseActivity : AppCompatActivity() {
         flContainerMainLoading.visibility = if(show) View.VISIBLE else View.GONE
         mainView.visibility = if(!show) View.VISIBLE else View.GONE
         pbLoading.visibility = if(show) View.VISIBLE else View.GONE
-        tvPhError.visibility = View.INVISIBLE
+        tvPhError.visibility = View.GONE
     }
 
     fun setUpBackToolBar(@StringRes title: Int) {
