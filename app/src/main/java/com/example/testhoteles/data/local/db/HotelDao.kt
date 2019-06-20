@@ -13,6 +13,9 @@ interface HotelDao {
    @Query("SELECT * from hotel_table")
     fun getHotels(): Single<MutableList<Hotel>?>
 
+    @Query("SELECT * from hotel_table where hotel_name like :query")
+    fun getQueryHotels(query: String): Single<MutableList<Hotel>?>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(hotels: List<Hotel>)
 }

@@ -8,12 +8,14 @@ import com.example.testhoteles.data.repositories.HotelsRepository
 import com.example.testhoteles.ui.base.BaseViewModel
 import com.example.testhoteles.ui.base.ScreenState
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class MainViewModel@Inject constructor(private val repository: HotelsRepository): BaseViewModel(){
     val hotelsLiveData : MutableLiveData<MutableList<Hotel>> = MutableLiveData()
     val screenStateLiveData : MutableLiveData<ScreenState> = MutableLiveData()
+    var searchDisposable: Disposable? = null
 
     init {
         getHotels()
@@ -53,5 +55,21 @@ class MainViewModel@Inject constructor(private val repository: HotelsRepository)
 
     override fun onCleared() {
         super.onCleared()
+        compositeDisposable.dispose()
+        searchDisposable?.dispose()
+    }
+
+    fun attendOnSearchItems(newText: String) {
+        searchDisposable?.dispose()
+        screenStateLiveData.value = ScreenState.Loading(true)
+        searchDisposable = repository.getQueryHotelsFromDb(newText)
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                    it -> onSuccessGetHotels(it)
+            }, {
+                screenStateLiveData.value = ScreenState.Loading(false)
+
+            })
     }
 }

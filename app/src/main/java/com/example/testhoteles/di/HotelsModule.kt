@@ -28,16 +28,16 @@ import javax.inject.Singleton
 
 @Module
 class HotelsModule {
-    @Provides
+   /* @Provides
     @Singleton
     fun mainViewModel(repository: HotelsRepository): MainViewModel {
         return MainViewModel(repository)
-    }
+    }*/
 
-    @Provides
+   /* @Provides
     fun hotelDetailViewModel(repository: HotelsRepository):  HotelDetailViewModel{
         return HotelDetailViewModel(repository)
-    }
+    }*/
 
     @Provides
     fun repository(apiServices: ApiServices, hotelDao: HotelDao): HotelsRepository {

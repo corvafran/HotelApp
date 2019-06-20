@@ -16,23 +16,11 @@ import android.R.attr.dependency
 class HotelDetailViewModel@Inject constructor(private val repository: HotelsRepository) : BaseViewModel() {
     val hotelLiveData : MutableLiveData<Hotel> = MutableLiveData()
     val screenStateLiveData : MutableLiveData<ScreenState> = MutableLiveData()
-    val eventsLiveData: MutableLiveData<Events> = MutableLiveData()
     var hotel: Hotel? = null
-
-    init {
-    }
-
-    fun onClickHotelPhoto(){
-            eventsLiveData.postValue(Events.OnClickHotelPhoto(hotel!!.mainPicture))
-    }
-
-    fun onClickReviews(){
-        if(!hotel!!.reviews.isNullOrEmpty())
-        eventsLiveData.postValue(Events.OnClickReviews(hotel!!.reviews!!))
-    }
 
     fun start(hotel: Hotel) {
         this.hotel = hotel;
+        if(hotelLiveData.value != null) return
         screenStateLiveData.postValue(ScreenState.Loading(true))
         var disposable = repository.getHotel(hotel.id!!)
             .subscribeOn(Schedulers.newThread())

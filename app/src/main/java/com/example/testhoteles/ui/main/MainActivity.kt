@@ -2,7 +2,10 @@ package com.example.testhoteles.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.example.testhoteles.MyApplication
 import com.example.testhoteles.R
 import com.example.testhoteles.data.model.Hotel
@@ -14,15 +17,37 @@ import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
-    @Inject lateinit var viewModel: MainViewModel
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val app = application as? MyApplication
         app?.component?.inject(this)
+        ViewModelProvider.NewInstanceFactory()
+        viewModel = ViewModelProviders
+            .of(this, viewModelFactory)
+            .get(MainViewModel::class.java)
         setupList()
         observeViewModelData()
+        setupSearch()
+    }
+
+    private fun setupSearch() {
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.attendOnSearchItems(newText!!)
+                return true
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+
+                return true
+            }
+
+        })
     }
 
 
@@ -44,9 +69,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun onClickHotel(hotel: Hotel) {
-        val intent = Intent(this, HotelDetailActivity::class.java)
-        intent.putExtra(Constants.HOTEL_EXTRA, hotel)
-        startActivity(intent)
+        HotelDetailActivity.start(hotel, this)
     }
 
     private fun onScreenStateChanged(screenState: ScreenState?) {
@@ -66,6 +89,5 @@ class MainActivity : BaseActivity() {
 
     private fun setupList() {
         rvHotels.adapter = HotelsAdapter()
-        //rvHotels.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
     }
 }

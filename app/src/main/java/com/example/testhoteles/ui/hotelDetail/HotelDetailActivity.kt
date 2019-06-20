@@ -1,9 +1,12 @@
 package com.example.testhoteles.ui.hotelDetail
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testhoteles.GlideApp
@@ -13,6 +16,7 @@ import com.example.testhoteles.data.model.Amenity
 import com.example.testhoteles.data.model.Hotel
 import com.example.testhoteles.ui.base.BaseActivity
 import com.example.testhoteles.ui.base.ScreenState
+import com.example.testhoteles.ui.main.MainViewModel
 import com.example.testhoteles.ui.photoDetail.PhotoDetailActivity
 import com.example.testhoteles.ui.reviews.ReviewsActivity
 import com.example.testhoteles.utils.Constants
@@ -22,7 +26,17 @@ import javax.inject.Inject
 
 
 class HotelDetailActivity: BaseActivity() {
-    @Inject lateinit var hotelDetailViewModel: HotelDetailViewModel
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    lateinit var hotelDetailViewModel: HotelDetailViewModel
+
+    companion object{
+        fun start(hotel: Hotel, context: Context){
+            val intent = Intent(context, HotelDetailActivity::class.java)
+            intent.putExtra(Constants.HOTEL_EXTRA, hotel)
+            context.startActivity(intent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +47,9 @@ class HotelDetailActivity: BaseActivity() {
         setupAmenitiesList()
         loadHotelInfo(hotelExtra)
         app?.component?.inject(this)
+        hotelDetailViewModel = ViewModelProviders
+            .of(this, viewModelFactory)
+            .get(HotelDetailViewModel::class.java)
         observeViewModelData()
         hotelDetailViewModel.start(hotelExtra)
         setEvents()
@@ -40,10 +57,12 @@ class HotelDetailActivity: BaseActivity() {
 
     private fun setEvents() {
         llReviews.setOnClickListener {
-            hotelDetailViewModel.onClickReviews()
+            if(!hotelDetailViewModel.hotel!!.reviews.isNullOrEmpty()){
+                ReviewsActivity.start(hotelDetailViewModel.hotel!!.reviews, this)
+            }
         }
         ivHotel.setOnClickListener {
-            hotelDetailViewModel.onClickHotelPhoto()
+            PhotoDetailActivity.start(hotelDetailViewModel.hotel?.mainPicture, this)
         }
     }
 
@@ -84,20 +103,6 @@ class HotelDetailActivity: BaseActivity() {
         })
         hotelDetailViewModel.hotelLiveData.observe(this, Observer {
                 it -> loadHotelInfo(it)
-        })
-        hotelDetailViewModel.eventsLiveData.observe(this, Observer {
-            it -> when(it){
-            is Events.OnClickReviews ->{
-                var intent = Intent(this, ReviewsActivity::class.java)
-                intent.putParcelableArrayListExtra(Constants.REVIEWS_EXTRA, it.reviews)
-                startActivity(intent)
-            }
-            is Events.OnClickHotelPhoto ->{
-                var intent = Intent(this, PhotoDetailActivity::class.java)
-                intent.putExtra(PhotoDetailActivity.PHOTO_EXTRA, it.photoUrl)
-                startActivity(intent)
-            }
-        }
         })
     }
 

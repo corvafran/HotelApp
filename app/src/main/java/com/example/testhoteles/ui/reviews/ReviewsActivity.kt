@@ -1,5 +1,7 @@
 package com.example.testhoteles.ui.reviews
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -14,6 +16,13 @@ import kotlinx.android.synthetic.main.activity_list.*
 
 class ReviewsActivity: BaseActivity(){
     var reviews: ArrayList<Review>? = null
+    companion object{
+        fun start(reviews: java.util.ArrayList<Review?>?, context: Context){
+            var intent = Intent(context, ReviewsActivity::class.java)
+            intent.putParcelableArrayListExtra(Constants.REVIEWS_EXTRA, reviews)
+            context.startActivity(intent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

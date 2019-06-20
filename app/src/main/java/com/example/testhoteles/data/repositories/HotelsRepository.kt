@@ -21,6 +21,11 @@ class HotelsRepository @Inject constructor(private val apiServices: ApiServices,
         return hotelDao.getHotels()
     }
 
+    fun getQueryHotelsFromDb(query: String): Single<MutableList<Hotel>?>{
+        var search = "%$query%";
+        return hotelDao.getQueryHotels(search)
+    }
+
     fun getHotel(id: String): Single<Hotel?> {
         var observable = apiServices.getHotelDetail(id)
             .map { hotelResponse: HotelResponse ->
