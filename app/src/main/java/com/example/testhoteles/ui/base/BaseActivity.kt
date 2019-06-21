@@ -27,6 +27,14 @@ abstract class BaseActivity : AppCompatActivity() {
         tvPhError.visibility = View.GONE
     }
 
+    fun showErrorPlaceHolder(error: String, mainView: View) {
+        mainView.visibility = View.GONE
+        flContainerMainLoading.visibility = View.VISIBLE
+        tvPhError.visibility = View.VISIBLE
+        tvPhError.text = error
+        pbLoading.visibility = View.GONE
+    }
+
     fun setUpBackToolBar(@StringRes title: Int) {
         setSupportActionBar(toolbar)
         supportActionBar!!.title = getString(title)

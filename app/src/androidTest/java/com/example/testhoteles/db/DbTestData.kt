@@ -1,11 +1,10 @@
-package com.example.testhoteles
+package com.example.testhoteles.db
 
-import android.content.Context
 import com.example.testhoteles.data.model.Hotel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-object TestData {
+object DbTestData {
     fun getTestHotel(): List<Hotel>{
         var gson = Gson()
         val listType = object : TypeToken<ArrayList<Hotel>>() {

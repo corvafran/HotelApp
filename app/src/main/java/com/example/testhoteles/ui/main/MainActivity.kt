@@ -2,7 +2,9 @@ package com.example.testhoteles.ui.main
 
 import android.content.Intent
 import android.media.Image
+import android.opengl.Visibility
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
@@ -77,7 +79,7 @@ class MainActivity : BaseActivity() {
     private fun onScreenStateChanged(screenState: ScreenState?) {
         when (screenState) {
             is ScreenState.Error -> {
-
+                showErrorPlaceHolder(screenState.error, rvHotels)
             }
             is ScreenState.Loading -> {
                 showLoading(screenState.show, rvHotels);
@@ -87,6 +89,7 @@ class MainActivity : BaseActivity() {
             }
         }
     }
+
 
 
     private fun setupList() {

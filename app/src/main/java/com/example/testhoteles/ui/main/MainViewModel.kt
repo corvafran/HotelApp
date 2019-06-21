@@ -7,6 +7,7 @@ import com.example.testhoteles.data.model.Hotel
 import com.example.testhoteles.data.repositories.HotelsRepository
 import com.example.testhoteles.ui.base.BaseViewModel
 import com.example.testhoteles.ui.base.ScreenState
+import com.example.testhoteles.utils.EspressoIdlingResource
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -27,6 +28,8 @@ class MainViewModel@Inject constructor(private val repository: HotelsRepository,
     }
 
     private fun getHotels(){
+        EspressoIdlingResource.increment(); // App is busy until further notice
+
         screenStateLiveData.value= ScreenState.Loading(true)
         val disposable = repository.getAllHotels()
             .subscribeOn(newScheduler)
@@ -42,7 +45,12 @@ class MainViewModel@Inject constructor(private val repository: HotelsRepository,
 
     private fun onSuccessGetHotels(it: MutableList<Hotel>?) {
         screenStateLiveData.value = ScreenState.Loading(false)
+        if(!it.isNullOrEmpty()){
         hotelsLiveData.postValue(it)
+        }else{
+            screenStateLiveData.value = ScreenState.Error("No se encontraron hoteles")
+        }
+        EspressoIdlingResource.decrement()
     }
 
     private fun onErrorGetHotels(throwable: Throwable) {
@@ -54,7 +62,8 @@ class MainViewModel@Inject constructor(private val repository: HotelsRepository,
             .subscribe({
                     it -> onSuccessGetHotels(it)
             }, {
-
+                screenStateLiveData.value = ScreenState.Error("Ocurrio un error, vuelva a intentar")
+                EspressoIdlingResource.decrement()
             }))
     }
 
@@ -65,6 +74,7 @@ class MainViewModel@Inject constructor(private val repository: HotelsRepository,
     }
 
     fun attendOnSearchItems(newText: String) {
+        EspressoIdlingResource.increment()
         searchDisposable?.dispose()
         screenStateLiveData.value = ScreenState.Loading(true)
         searchDisposable = repository.getQueryHotelsFromDb(newText)
@@ -74,6 +84,7 @@ class MainViewModel@Inject constructor(private val repository: HotelsRepository,
                     it -> onSuccessGetHotels(it)
             }, {
                 screenStateLiveData.value = ScreenState.Loading(false)
+                EspressoIdlingResource.decrement()
 
             })
     }

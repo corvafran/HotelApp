@@ -53,6 +53,8 @@ class MainViewModelTest {
     @Mock
     private lateinit var lifecycle: Lifecycle
 
+
+
     val hotels = mutableListOf<Hotel>()
 
     @Before
