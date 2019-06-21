@@ -7,12 +7,17 @@ import com.example.testhoteles.data.model.Hotel
 import com.example.testhoteles.data.repositories.HotelsRepository
 import com.example.testhoteles.ui.base.BaseViewModel
 import com.example.testhoteles.ui.base.ScreenState
+import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
+import javax.inject.Named
 
-class MainViewModel@Inject constructor(private val repository: HotelsRepository): BaseViewModel(){
+class MainViewModel@Inject constructor(private val repository: HotelsRepository,
+                                       @Named("newThread") private val newScheduler: Scheduler,
+                                       @Named("mainThread") private val androidScheduler: Scheduler
+): BaseViewModel(){
     val hotelsLiveData : MutableLiveData<MutableList<Hotel>> = MutableLiveData()
     val screenStateLiveData : MutableLiveData<ScreenState> = MutableLiveData()
     var searchDisposable: Disposable? = null
@@ -24,8 +29,8 @@ class MainViewModel@Inject constructor(private val repository: HotelsRepository)
     private fun getHotels(){
         screenStateLiveData.value= ScreenState.Loading(true)
         val disposable = repository.getAllHotels()
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(newScheduler)
+            .observeOn(androidScheduler)
             .subscribe({
                 onSuccessGetHotels(it)
             }, {
@@ -44,8 +49,8 @@ class MainViewModel@Inject constructor(private val repository: HotelsRepository)
         screenStateLiveData.value = ScreenState.Loading(false)
         screenStateLiveData.value = ScreenState.ToastMessage("No se pudieron actualizar los hoteles")
         compositeDisposable.add(repository.getAllHotelsFromDb()
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(newScheduler)
+            .observeOn(androidScheduler)
             .subscribe({
                     it -> onSuccessGetHotels(it)
             }, {
@@ -63,8 +68,8 @@ class MainViewModel@Inject constructor(private val repository: HotelsRepository)
         searchDisposable?.dispose()
         screenStateLiveData.value = ScreenState.Loading(true)
         searchDisposable = repository.getQueryHotelsFromDb(newText)
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(newScheduler)
+            .observeOn(androidScheduler)
             .subscribe({
                     it -> onSuccessGetHotels(it)
             }, {

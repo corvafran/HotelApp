@@ -13,6 +13,10 @@
             android:theme="@style/AppTheme"
             android:name=".MyApplication"
             android:usesCleartextTraffic="true">
+
+        <uses-library android:name="android.test.runner"
+                      android:required="false" />
+
         <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

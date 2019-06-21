@@ -13,6 +13,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        useLibrary 'android.test.runner'
+        useLibrary 'android.test.base'
+        useLibrary 'android.test.mock'
     }
     buildTypes {
         release {
@@ -33,9 +36,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.core:core-ktx:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
     //GLIDE BIBLITECA DE CARGA DE IMAGENES
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
@@ -62,8 +63,28 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.1.0'
     kapt 'androidx.room:room-compiler:2.1.0'
     implementation "androidx.room:room-rxjava2:2.1.0"
-    testImplementation "androidx.room:room-testing:2.1.0"
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    testImplementation "androidx.room:room-testing:2.1.0"
+    // Dependencies for local unit tests
+    testImplementation "org.mockito:mockito-inline:2.8.47"
+    testImplementation "org.hamcrest:hamcrest-all:1.3"
+
+    // Core library
+    androidTestImplementation 'androidx.test:core:1.2.0'
+
+    // AndroidJUnitRunner and JUnit Rules
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    testImplementation 'junit:junit:4.12'
+
+    //Espresso
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+
+    //local unit tests
+    testImplementation "android.arch.core:core-testing:1.1.1"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0"
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-alpha01'
 
 }
 
