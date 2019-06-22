@@ -9,6 +9,8 @@ Esta app contiene 4 pantallas: una lista de hoteles, detalle del hotel, detalle 
 
 Se empleó la arquitectura MVVM (Model-View-ViewModel) como capa de presentación.
 
+![alt text](https://github.com/corvafran/HotelApp/blob/master/art/viewmodel_diagram.png)
+
 Activity / Fragment: Es el encargado de mostrar datos y enviar enventos de UI. La vista y el viewModel se comunican usando LiveData. LiveData es un observable que notifica a la UI por actualizaciones. Es tambien consciente del ciclo de vida y esto evita crashes parando las actualizaciones.
 Las clases son:
 
