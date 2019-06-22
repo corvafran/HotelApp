@@ -6,10 +6,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.testhoteles.GlideApp
 import com.example.testhoteles.R
 import com.example.testhoteles.data.model.Amenity
 import com.example.testhoteles.ui.base.BaseViewHolder
+import com.example.testhoteles.utils.AmenitiesIconUtils
 
 class AmenitiesAdapter: RecyclerView.Adapter<BaseViewHolder<Amenity?>>() {
     var list: List<Amenity?> = mutableListOf()
@@ -38,6 +40,10 @@ class AmenitiesAdapter: RecyclerView.Adapter<BaseViewHolder<Amenity?>>() {
 
         override fun bindItem(item: Amenity?) {
             tvAmenitie?.setText(item?.description)
+            if(item?.id != null)
+            GlideApp.with(itemView.context)
+                .load(AmenitiesIconUtils.getDrawableFromId(item.id))
+                .into(ivIcon!!)
         }
 
     }
