@@ -4,7 +4,10 @@ import android.content.Intent
 import android.media.Image
 import android.opengl.Visibility
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
@@ -40,15 +43,15 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupSearch() {
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
-            override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.attendOnSearchItems(newText!!)
-                return true
+        searchView.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
             }
 
-            override fun onQueryTextSubmit(query: String?): Boolean {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
 
-                return true
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.attendOnSearchItems(s.toString())
             }
 
         })

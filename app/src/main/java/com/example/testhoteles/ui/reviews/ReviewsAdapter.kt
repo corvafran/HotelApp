@@ -41,10 +41,12 @@ class ReviewsAdapter: RecyclerView.Adapter<BaseViewHolder<Review?>>()  {
 
         override fun bindItem(item: Review?) {
             tvUser?.text = "${item?.user?.name} (${item?.user?.country})"
-            tvBadComment?.text = itemView.context.getString(R.string.bad_comment,
+            var badComment = itemView.context.getString(R.string.bad_comment,
                 if (!item?.comments?.bad.isNullOrEmpty()) item?.comments?.bad else "-")
-            tvGoodComment?.text = itemView.context.getString(R.string.good_comment,
+            tvBadComment?.text = badComment
+            var goodComment = itemView.context.getString(R.string.good_comment,
                 if (!item?.comments?.good.isNullOrEmpty()) item?.comments?.good else "-")
+            tvGoodComment?.text = goodComment
         }
 
     }
